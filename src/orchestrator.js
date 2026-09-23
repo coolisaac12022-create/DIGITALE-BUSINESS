@@ -39,8 +39,8 @@ function routerDemande(message) {
   return meilleur ? meilleur[0] : config.routing.agent_par_defaut;
 }
 
-// Appel a l'API Google Gemini (free tier : 1500 requetes/jour)
-async function appelerIA(promptSysteme, messageUtilisateur) {
+// Appel a l'API Google Gemini (free tier : 20 requetes/min)
+async function appelerIA(promptSysteme, messageUtilisateur, tentatives = 3) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error(
@@ -64,6 +64,13 @@ async function appelerIA(promptSysteme, messageUtilisateur) {
       })
     }
   );
+
+  if (reponse.status === 429 && tentatives > 0) {
+    const delai = 10000;
+    console.log(`[IA] Quota atteint, nouvelle tentative dans ${delai / 1000}s... (${tentatives} restantes)`);
+    await new Promise(r => setTimeout(r, delai));
+    return appelerIA(promptSysteme, messageUtilisateur, tentatives - 1);
+  }
 
   if (!reponse.ok) {
     const erreur = await reponse.text();
