@@ -9,7 +9,7 @@
   },
   "stack": {
     "backend": "Node.js + Express",
-    "ia": "Gemini API",
+    "ia": "Grok API (xAI)",
     "base_donnees": "PostgreSQL (Neon)",
     "deploiement": "Render / Railway (free tier)",
     "versioning": "Git + GitHub"

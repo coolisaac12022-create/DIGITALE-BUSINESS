@@ -43,7 +43,7 @@ Client / Isaac --> DIRECTEUR (orchestrateur)
 | Contrainte | Valeur |
 |-----------|--------|
 | Budget | 0 EUR (services gratuits uniquement) |
-| Stack | Node.js + Express + Gemini API + PostgreSQL/Neon |
+| Stack | Node.js + Express + Grok API (xAI) + PostgreSQL/Neon |
 | Langue | Francais |
 | Engagement financier | Jamais sans validation d'Isaac |
 | Contact humain | WhatsApp : 0595532884 |

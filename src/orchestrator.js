@@ -1,6 +1,6 @@
 /**
  * DIGITAL BUSINESS — Orchestrateur Multi-Agents
- * Route les demandes vers l'agent competent via l'API Gemini.
+ * Route les demandes vers l'agent competent via l'API Grok (xAI).
  */
 
 const fs = require('fs');
@@ -39,39 +39,40 @@ function routerDemande(message) {
   return meilleur ? meilleur[0] : config.routing.agent_par_defaut;
 }
 
-// Appel a l'API Gemini
-async function appelerGemini(promptSysteme, messageUtilisateur) {
-  const apiKey = process.env.GEMINI_API_KEY;
+// Appel a l'API Grok (xAI) — compatible OpenAI
+async function appelerGrok(promptSysteme, messageUtilisateur) {
+  const apiKey = process.env.XAI_API_KEY;
   if (!apiKey) {
     throw new Error(
-      'GEMINI_API_KEY manquante. Cree un fichier .env avec : GEMINI_API_KEY=ta_cle\n' +
-      'Obtiens une cle gratuite sur : https://aistudio.google.com/apikey'
+      'XAI_API_KEY manquante. Cree un fichier .env avec : XAI_API_KEY=ta_cle\n' +
+      'Obtiens une cle sur : https://console.x.ai'
     );
   }
 
-  const reponse = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: promptSysteme }] },
-        contents: [{ role: 'user', parts: [{ text: messageUtilisateur }] }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 2048
-        }
-      })
-    }
-  );
+  const reponse = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'grok-3-mini',
+      messages: [
+        { role: 'system', content: promptSysteme },
+        { role: 'user', content: messageUtilisateur }
+      ],
+      temperature: 0.7,
+      max_tokens: 2048
+    })
+  });
 
   if (!reponse.ok) {
     const erreur = await reponse.text();
-    throw new Error(`Erreur Gemini (${reponse.status}) : ${erreur}`);
+    throw new Error(`Erreur Grok/xAI (${reponse.status}) : ${erreur}`);
   }
 
   const data = await reponse.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || 'Pas de reponse.';
+  return data.choices?.[0]?.message?.content || 'Pas de reponse.';
 }
 
 // Fonction principale : recoit un message, route, et retourne la reponse
@@ -83,7 +84,7 @@ async function traiter(message) {
   console.log(`\n[DIRECTEUR] Demande routed vers : ${agent.nom}`);
   console.log(`[DIRECTEUR] Traitement en cours...\n`);
 
-  const reponse = await appelerGemini(promptSysteme, message);
+  const reponse = await appelerGrok(promptSysteme, message);
 
   console.log(`[${agent.nom}] :\n`);
   console.log(reponse);
@@ -99,7 +100,7 @@ if (require.main === module) {
   if (!message) {
     console.log('Usage : node src/orchestrator.js "ta demande ici"');
     console.log('\nExemples :');
-    console.log('  node src/orchestrator.js "Comment securiser ma cle API Gemini ?"');
+    console.log('  node src/orchestrator.js "Comment securiser ma cle API ?"');
     console.log('  node src/orchestrator.js "Propose un design pour le site vitrine"');
     console.log('  node src/orchestrator.js "Quelle strategie de prix pour les deblocages ?"');
     process.exit(0);
