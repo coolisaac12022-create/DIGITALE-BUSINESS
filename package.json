@@ -1,0 +1,23 @@
+{
+  "name": "digital-business-agents",
+  "version": "1.0.0",
+  "description": "Systeme multi-agents IA de Digital Business — orchestrateur Gemini + API Express",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test:route": "node -e \"const {routerDemande}=require('./src/orchestrator'); console.log(routerDemande('Comment securiser ma cle API ?'))\"",
+    "test:db": "node -e \"require('dotenv').config(); const {tester}=require('./src/db'); tester().then(()=>process.exit())\""
+  },
+  "keywords": ["ia", "multi-agents", "digital-business", "gemini", "express"],
+  "author": "Isaac — Digital Business",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "pg": "^8.13.0"
+  }
+}

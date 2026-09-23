@@ -1,0 +1,79 @@
+{
+  "entreprise": {
+    "nom": "DIGITAL BUSINESS",
+    "fondateur": "Isaac",
+    "slogan": "Plus qu'un service, une solution !",
+    "localisation": "M'Bengue, nord de la Cote d'Ivoire",
+    "contact_humain": "WhatsApp : 0595532884",
+    "budget": "0 EUR — services gratuits uniquement"
+  },
+  "stack": {
+    "backend": "Node.js + Express",
+    "ia": "Gemini API",
+    "base_donnees": "PostgreSQL (Neon)",
+    "deploiement": "Render / Railway (free tier)",
+    "versioning": "Git + GitHub"
+  },
+  "agents": [
+    {
+      "id": "directeur",
+      "nom": "DIRECTEUR",
+      "role": "Superviseur / Orchestrateur",
+      "fichier_prompt": "agents/01-directeur.md",
+      "competences": ["coordination", "routing", "synthese", "arbitrage"],
+      "routes_vers": ["developpeur", "managers", "data-scientist", "cybersecurite", "design-codeur"]
+    },
+    {
+      "id": "developpeur",
+      "nom": "DEVELOPPEUR FULL-STACK",
+      "role": "Code backend et frontend",
+      "fichier_prompt": "agents/02-developpeur.md",
+      "competences": ["node.js", "express", "postgresql", "api-rest", "deploiement", "debug"]
+    },
+    {
+      "id": "managers",
+      "nom": "COMITE MANAGERS",
+      "role": "Gestion collegiale (strategie, operations, finances)",
+      "fichier_prompt": "agents/03-managers.md",
+      "competences": ["strategie", "tarification", "priorisation", "organisation"]
+    },
+    {
+      "id": "data-scientist",
+      "nom": "DATA SCIENTIST",
+      "role": "Analyse de donnees et predictions",
+      "fichier_prompt": "agents/04-data-scientist.md",
+      "competences": ["sql", "statistiques", "visualisation", "kpi", "modeles-prediction"]
+    },
+    {
+      "id": "cybersecurite",
+      "nom": "CYBERSECURITE",
+      "role": "Audit et protection des systemes",
+      "fichier_prompt": "agents/05-cybersecurite.md",
+      "competences": ["audit", "vulnerabilites", "chiffrement", "2fa", "sensibilisation"]
+    },
+    {
+      "id": "design-codeur",
+      "nom": "DESIGN & CODEUR",
+      "role": "Interfaces et supports visuels",
+      "fichier_prompt": "agents/06-design-codeur.md",
+      "competences": ["ui", "ux", "html", "css", "javascript", "react", "mobile-first", "flyers"]
+    }
+  ],
+  "routing": {
+    "regles": [
+      { "mots_cles": ["code", "bug", "serveur", "base de donnees", "deployer", "backend", "endpoint", "api rest", "express", "node", "javascript", "fonction", "programme", "site web", "application", "crud"], "agent": "developpeur" },
+      { "mots_cles": ["strategie", "prix", "tarif", "priorite", "organisation", "decision", "budget"], "agent": "managers" },
+      { "mots_cles": ["donnees", "statistiques", "kpi", "analyse", "prediction", "pronostic", "graphique"], "agent": "data-scientist" },
+      { "mots_cles": ["securite", "securiser", "mot de passe", "cle api", "api key", "vulnerabilite", "piratage", "protection", "2fa", "chiffrement"], "agent": "cybersecurite" },
+      { "mots_cles": ["design", "interface", "maquette", "flyer", "logo", "couleur", "page", "css", "ui"], "agent": "design-codeur" }
+    ],
+    "agent_par_defaut": "directeur"
+  },
+  "projets_actifs": [
+    { "nom": "Digital Business", "type": "site vitrine + services", "statut": "actif" },
+    { "nom": "Aelyra", "type": "a definir", "statut": "actif" },
+    { "nom": "Isaac AI Team", "type": "equipe IA", "statut": "actif" },
+    { "nom": "Sport-Analytics", "type": "pronostics sportifs", "statut": "actif" },
+    { "nom": "Projets scolaires ALX", "type": "formation", "statut": "en cours" }
+  ]
+}
