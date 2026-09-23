@@ -3,7 +3,15 @@
  */
 const express = require('express');
 const router = express.Router();
-const { pool } = require('../db');
+const { pool, estDisponible } = require('../db');
+
+// Middleware : verifier que la base est disponible
+router.use((req, res, next) => {
+  if (!estDisponible()) {
+    return res.status(503).json({ erreur: 'Base de donnees non configuree. Ajoutez DATABASE_URL dans les variables d\'environnement.' });
+  }
+  next();
+});
 
 // GET /api/clients — Liste des clients
 router.get('/', async (req, res) => {

@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const { traiter } = require('../orchestrator');
-const { pool } = require('../db');
+const { pool, estDisponible } = require('../db');
 
 // POST /api/agent/question — Envoyer une question a l'equipe IA
 router.post('/question', async (req, res) => {
@@ -17,8 +17,8 @@ router.post('/question', async (req, res) => {
   try {
     const resultat = await traiter(message);
 
-    // Sauvegarder la conversation en base
-    if (session_id) {
+    // Sauvegarder la conversation en base (si disponible)
+    if (session_id && estDisponible()) {
       await pool.query(
         `INSERT INTO conversations (session_id, agent_id, message_utilisateur, reponse_agent)
          VALUES ($1, $2, $3, $4)`,
@@ -39,6 +39,9 @@ router.post('/question', async (req, res) => {
 
 // GET /api/agent/historique/:sessionId — Recuperer l'historique d'une session
 router.get('/historique/:sessionId', async (req, res) => {
+  if (!estDisponible()) {
+    return res.json({ session: req.params.sessionId, messages: [], info: 'Base de donnees non configuree' });
+  }
   try {
     const result = await pool.query(
       `SELECT agent_id, message_utilisateur, reponse_agent, cree_le
