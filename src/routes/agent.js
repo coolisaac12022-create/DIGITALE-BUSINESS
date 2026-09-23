@@ -33,7 +33,7 @@ router.post('/question', async (req, res) => {
     });
   } catch (err) {
     console.error('[API/agent] Erreur :', err.message);
-    res.status(500).json({ erreur: 'Erreur interne. Reessayez ou contactez WhatsApp : 0595532884' });
+    res.status(500).json({ erreur: `Erreur interne : ${err.message}` });
   }
 });
 
